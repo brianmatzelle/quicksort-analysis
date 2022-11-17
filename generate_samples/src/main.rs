@@ -22,5 +22,14 @@ fn main() -> Result<(), Error> {
     write!(File::create("../samples/backwards.txt")?, "{}", backwards(SET_SIZE))?;
 
     // create random.txt
-    write!(File::create("../samples/random.txt")?, "{}", random_ints(SET_SIZE, RANDOM_LOWER_B, RANDOM_UPPER_B))
+    write!(File::create("../samples/random.txt")?, "{}", random_ints(SET_SIZE, RANDOM_LOWER_B, RANDOM_UPPER_B))?;
+
+    // create random_10k.txt
+    write!(File::create("../samples/random_10k.txt")?, "{}", random_ints(SET_SIZE*10, RANDOM_LOWER_B, RANDOM_UPPER_B*10))?;
+
+    // create random_with_neg.txt
+    write!(File::create("../samples/random_with_neg.txt")?, "{}", random_ints(SET_SIZE, RANDOM_LOWER_B-RANDOM_UPPER_B, RANDOM_UPPER_B))?;
+
+    // create random_10k_with_neg.txt
+    write!(File::create("../samples/random_10k_with_neg.txt")?, "{}", random_ints(SET_SIZE*10, (RANDOM_LOWER_B-RANDOM_UPPER_B)*10, RANDOM_UPPER_B*10))
 }
