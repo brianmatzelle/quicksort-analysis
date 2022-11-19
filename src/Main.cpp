@@ -15,63 +15,80 @@
 using namespace std;
 using namespace std::chrono;
 
-vector <int> arr;
+vector <int> lomuto_arr;
+vector <int> hoare_arr;
+vector <int> median_arr;
 int LomutoPartition(int p, int r){
-    //cout << "p = " << p << endl;
-    //cout << "r = " << r << endl;
-    /*
-    cout << "Before Partitioning: " << endl;
-    cout << "[";
-    for(int l = 0; l < arr.size(); l++){
-        if(l == arr.size()-1){
-            cout << arr[l];
-        }
-        else{
-            cout << arr[l] << ",";
-        }
-    }
-    cout << "]" << endl;
-    */
-    int x = arr[r];
+    int x = lomuto_arr[r];
     int i = p-1;
     int temp;
     for(int j = p; j < r; j++){
-        if(arr[j] <= x){
+        if(lomuto_arr[j] <= x){
             i++;
-            temp = arr[i];
-            arr[i]=arr[j];
-            arr[j]=temp;
+            temp = lomuto_arr[i];
+            lomuto_arr[i]=lomuto_arr[j];
+            lomuto_arr[j]=temp;
         }
     }
-    temp = arr[i+1];
-    arr[i+1] = arr[r];
-    arr[r] = temp;
-    /*
-    cout << "After Partitioning : " << endl;
+    temp = lomuto_arr[i+1];
+    lomuto_arr[i+1] = lomuto_arr[r];
+    lomuto_arr[r] = temp;
+    return i+1;
+}
+int HoarePartition(int p, int r){
+    cout << "Before Hoare's Partition: "<< endl;
     cout << "[";
-    for(int l = 0; l < arr.size(); l++){
-        if(l == arr.size()-1){
-            cout << arr[l];
+    for(int o = 0; o < hoare_arr.size(); o++){
+        if(o == hoare_arr.size()-1){
+            cout << hoare_arr[o];
         }
         else{
-            cout << arr[l] << ",";
+            cout << hoare_arr[o] << ",";
         }
     }
     cout << "]" << endl;
-    cout << endl;
-    */
-    return i+1;
-    
-}
-/*
-vector <int> HoareQuicksort(vector <int> A, int p, int r){
-    if(p < r){
-        int q = HoarePartition(A,p,r);
-        //HoareQuicksort(A,p,q-1);
-        //HoareQuicksort(A,q+1,r);
+    int x = hoare_arr[p];
+    int i = p -1;
+    int j = r +1;
+    while (true) {
+        // Find leftmost element greater than
+        // or equal to pivot
+        do {
+            i++;
+        } while (hoare_arr[i] < x);
+ 
+        // Find rightmost element smaller than
+        // or equal to pivot
+        do {
+            j--;
+        } while (hoare_arr[j] > x);
+ 
+        // If two pointers met.
+        if (i >= j)
+            return j;
+ 
+        swap(hoare_arr[i], hoare_arr[j]);
     }
 }
-*/
+void HoareQuicksort(int p, int r){
+    if(p < r){
+        int q = HoarePartition(p,r);
+        cout << "After Hoare's Partition: "<< endl;
+        cout << "[";
+        for(int o = 0; o < hoare_arr.size(); o++){
+            if(o == hoare_arr.size()-1){
+                cout << hoare_arr[o];
+            }
+            else{
+                cout << hoare_arr[o] << ",";
+            }
+        }
+        cout << "]" << endl;
+        cout << endl;
+        HoareQuicksort(p,q);
+        HoareQuicksort(q+1,r);
+    }
+}
 void LomutoQuicksort(int p, int r){
     if(p < r){
         int q = LomutoPartition(p,r);
@@ -117,33 +134,64 @@ int main(int argc, char *argv[]) {
 
     string command;
     while (infile >> command){
-        arr.push_back(stoi(command));
+        lomuto_arr.push_back(stoi(command));
+        hoare_arr.push_back(stoi(command));
+        median_arr.push_back(stoi(command));
     }
-    outfile << "Original Array:" <<endl;
+
+    //////////////////////////////////////////////////LAMUTO
+    outfile << "Original Lomuto array:" <<endl;
     outfile << "[";
-    for(int i = 0; i < arr.size(); i++){
-        if(i != arr.size()-1){
-            outfile << arr[i] << ",";
+    for(int i = 0; i < lomuto_arr.size(); i++){
+        if(i != lomuto_arr.size()-1){
+            outfile << lomuto_arr[i] << ",";
         }
         else{
-            outfile << arr[i];
+            outfile << lomuto_arr[i];
         }
     }
     outfile << "]" << endl;
-    //vector<int> Hoare_sorted_array = HoareQuicksort(arr, 1, arr.size()-1);
-    LomutoQuicksort(0, arr.size()-1);
-   // vector<int> Median_sorted_array = MedianQuicksort(arr, 1, arr.size()-1);
-    outfile << "Sorted Lomuto Array: " << endl;
+    LomutoQuicksort(0, lomuto_arr.size()-1);
+    outfile << "Sorted Lomuto array: " << endl;
     outfile << "[";
-    for(int j = 0; j < arr.size(); j++){
-       if(j == arr.size()-1){
-            outfile << arr[j];
+    for(int j = 0; j < lomuto_arr.size(); j++){
+       if(j == lomuto_arr.size()-1){
+            outfile << lomuto_arr[j];
         }
         else{
-            outfile << arr[j] << ",";
+            outfile << lomuto_arr[j] << ",";
         }
     }
     outfile << "]" << endl;
+    outfile << endl;
+    //////////////////////////////////////////////////////////////Now Hoares
+    outfile << "Original Hoare array:" <<endl;
+    outfile << "[";
+    for(int i = 0; i < hoare_arr.size(); i++){
+        if(i != hoare_arr.size()-1){
+            outfile << hoare_arr[i] << ",";
+        }
+        else{
+            outfile << hoare_arr[i];
+        }
+    }
+    outfile << "]" << endl;
+    HoareQuicksort(0, hoare_arr.size()-1);
+    cout << "success!" << endl;
+    outfile << "Sorted Hoare array: " << endl;
+    outfile << "[";
+    for(int j = 0; j < hoare_arr.size(); j++){
+       if(j == hoare_arr.size()-1){
+            outfile << hoare_arr[j];
+        }
+        else{
+            outfile << hoare_arr[j] << ",";
+        }
+    }
+    outfile << "]" << endl;
+    /////////////////////////////////////////////Median
+    //MedianQuicksort(hoare_arr, 1, hoare_arr.size()-1);
+    
 
     return 0;
 }
