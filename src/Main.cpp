@@ -15,29 +15,79 @@
 using namespace std;
 using namespace std::chrono;
 
-
+vector <int> arr;
+int LomutoPartition(int p, int r){
+    //cout << "p = " << p << endl;
+    //cout << "r = " << r << endl;
+    /*
+    cout << "Before Partitioning: " << endl;
+    cout << "[";
+    for(int l = 0; l < arr.size(); l++){
+        if(l == arr.size()-1){
+            cout << arr[l];
+        }
+        else{
+            cout << arr[l] << ",";
+        }
+    }
+    cout << "]" << endl;
+    */
+    int x = arr[r];
+    int i = p-1;
+    int temp;
+    for(int j = p; j < r; j++){
+        if(arr[j] <= x){
+            i++;
+            temp = arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+        }
+    }
+    temp = arr[i+1];
+    arr[i+1] = arr[r];
+    arr[r] = temp;
+    /*
+    cout << "After Partitioning : " << endl;
+    cout << "[";
+    for(int l = 0; l < arr.size(); l++){
+        if(l == arr.size()-1){
+            cout << arr[l];
+        }
+        else{
+            cout << arr[l] << ",";
+        }
+    }
+    cout << "]" << endl;
+    cout << endl;
+    */
+    return i+1;
+    
+}
+/*
 vector <int> HoareQuicksort(vector <int> A, int p, int r){
     if(p < r){
         int q = HoarePartition(A,p,r);
-        HoareQuicksort(A,p,q-1);
-        HoareQuicksort(A,q+1,r);
+        //HoareQuicksort(A,p,q-1);
+        //HoareQuicksort(A,q+1,r);
     }
 }
-vector <int> LomutoQuicksort(vector <int> A, int p, int r){
+*/
+void LomutoQuicksort(int p, int r){
     if(p < r){
-        int q = LomutoPartition();
-        LomutoQuicksort(A,p,q-1);
-        LomutoQuicksort(A,q+1,r);
+        int q = LomutoPartition(p,r);
+        LomutoQuicksort(p,q-1);
+        LomutoQuicksort(q+1,r);
     }
 }
+/*
 vector <int> MedianQuicksort(vector <int> A, int p, int r){
     if(p < r){
-        int q = MedianPartition();
-        MedianQuicksort(A,p,q-1);
-        MedianQuicksort(A,q+1,r);
+        //int q = MedianPartition();
+        //MedianQuicksort(A,p,q-1);
+        //MedianQuicksort(A,q+1,r);
     }
 }
-
+*/
 
 int main(int argc, char *argv[]) {
     string inputfile_name = ""; //input file
@@ -65,32 +115,35 @@ int main(int argc, char *argv[]) {
     ifstream infile(inputfile_name);
     ofstream outfile(outputfile_name);
 
-    vector <int> arr;
     string command;
     while (infile >> command){
         arr.push_back(stoi(command));
     }
-    /*
-    cout << "Input array: Size is  " << arr.size() << endl;
-    for(int i = 0; i < arr.size(); i++){
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-    */
-    vector<int> Hoare_sorted_array = HoareQuicksort(arr, 1, arr.size()-1);
-    vector<int> Lomuto_sorted_array = LomutoQuicksort(arr, 1, arr.size()-1);
-    vector<int> Median_sorted_array = MedianQuicksort(arr, 1, arr.size()-1);
-    outfile << "Sorted Hoare Array: " << endl;
+    outfile << "Original Array:" <<endl;
     outfile << "[";
-    for(int j = 0; j < Hoare_sorted_array.size(); j++){
-        outfile<< Hoare_sorted_array[j] << ",";
+    for(int i = 0; i < arr.size(); i++){
+        if(i != arr.size()-1){
+            outfile << arr[i] << ",";
+        }
+        else{
+            outfile << arr[i];
+        }
+    }
+    outfile << "]" << endl;
+    //vector<int> Hoare_sorted_array = HoareQuicksort(arr, 1, arr.size()-1);
+    LomutoQuicksort(0, arr.size()-1);
+   // vector<int> Median_sorted_array = MedianQuicksort(arr, 1, arr.size()-1);
+    outfile << "Sorted Lomuto Array: " << endl;
+    outfile << "[";
+    for(int j = 0; j < arr.size(); j++){
+       if(j == arr.size()-1){
+            outfile << arr[j];
+        }
+        else{
+            outfile << arr[j] << ",";
+        }
     }
     outfile << "]" << endl;
 
-    /*
-    Where we'll run quicksort?
-    Each cpp file will be a partition...
-    maybe we create a generic quicksort() function then just insert the different partitions?
-    */
     return 0;
 }
