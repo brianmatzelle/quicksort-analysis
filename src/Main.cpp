@@ -26,7 +26,7 @@ int LomutoPartition(int p, int r){
         if(lomuto_arr[j] <= x){
             i++;
             temp = lomuto_arr[i];
-            lomuto_arr[i]=lomuto_arr[j];
+            lomuto_arr[i]=lomuto_arr[j];        //Lomuto Partition Algorithm, straight out of the lecture slides
             lomuto_arr[j]=temp;
         }
     }
@@ -36,17 +36,6 @@ int LomutoPartition(int p, int r){
     return i+1;
 }
 int HoarePartition(int p, int r){
-    cout << "Before Hoare's Partition: "<< endl;
-    cout << "[";
-    for(int o = 0; o < hoare_arr.size(); o++){
-        if(o == hoare_arr.size()-1){
-            cout << hoare_arr[o];
-        }
-        else{
-            cout << hoare_arr[o] << ",";
-        }
-    }
-    cout << "]" << endl;
     int x = hoare_arr[p];
     int i = p -1;
     int j = r +1;
@@ -73,18 +62,6 @@ int HoarePartition(int p, int r){
 void HoareQuicksort(int p, int r){
     if(p < r){
         int q = HoarePartition(p,r);
-        cout << "After Hoare's Partition: "<< endl;
-        cout << "[";
-        for(int o = 0; o < hoare_arr.size(); o++){
-            if(o == hoare_arr.size()-1){
-                cout << hoare_arr[o];
-            }
-            else{
-                cout << hoare_arr[o] << ",";
-            }
-        }
-        cout << "]" << endl;
-        cout << endl;
         HoareQuicksort(p,q);
         HoareQuicksort(q+1,r);
     }
@@ -135,14 +112,14 @@ int main(int argc, char *argv[]) {
     string command;
     while (infile >> command){
         lomuto_arr.push_back(stoi(command));
-        hoare_arr.push_back(stoi(command));
+        hoare_arr.push_back(stoi(command));     //created 3 seperate arrays for each Partition scenario
         median_arr.push_back(stoi(command));
     }
 
     //////////////////////////////////////////////////LAMUTO
     outfile << "Original Lomuto array:" <<endl;
     outfile << "[";
-    for(int i = 0; i < lomuto_arr.size(); i++){
+    for(int i = 0; i < lomuto_arr.size(); i++){     //Prints original *untouched* array
         if(i != lomuto_arr.size()-1){
             outfile << lomuto_arr[i] << ",";
         }
@@ -151,12 +128,12 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
-    LomutoQuicksort(0, lomuto_arr.size()-1);
+    LomutoQuicksort(0, lomuto_arr.size()-1);        //Quicksort call with Lomuto's Partition
     outfile << "Sorted Lomuto array: " << endl;
     outfile << "[";
     for(int j = 0; j < lomuto_arr.size(); j++){
        if(j == lomuto_arr.size()-1){
-            outfile << lomuto_arr[j];
+            outfile << lomuto_arr[j];               //Prints sorted array
         }
         else{
             outfile << lomuto_arr[j] << ",";
@@ -169,28 +146,50 @@ int main(int argc, char *argv[]) {
     outfile << "[";
     for(int i = 0; i < hoare_arr.size(); i++){
         if(i != hoare_arr.size()-1){
-            outfile << hoare_arr[i] << ",";
+            outfile << hoare_arr[i] << ",";         //Prints original *untouched* array
         }
         else{
             outfile << hoare_arr[i];
         }
     }
     outfile << "]" << endl;
-    HoareQuicksort(0, hoare_arr.size()-1);
-    cout << "success!" << endl;
+    HoareQuicksort(0, hoare_arr.size()-1);           //Quicksort call with Hoare's Partition
     outfile << "Sorted Hoare array: " << endl;
     outfile << "[";
     for(int j = 0; j < hoare_arr.size(); j++){
        if(j == hoare_arr.size()-1){
-            outfile << hoare_arr[j];
+            outfile << hoare_arr[j];                    //Prints sorted array
         }
         else{
             outfile << hoare_arr[j] << ",";
         }
     }
     outfile << "]" << endl;
-    /////////////////////////////////////////////Median
-    //MedianQuicksort(hoare_arr, 1, hoare_arr.size()-1);
+    outfile << endl;
+    /////////////////////////////////////////////TODO:Median Partition
+    outfile << "Original Median array:" <<endl;
+    outfile << "[";
+    for(int i = 0; i < median_arr.size(); i++){
+        if(i != median_arr.size()-1){
+            outfile << median_arr[i] << ",";         //Prints original *untouched* array
+        }
+        else{
+            outfile << median_arr[i];
+        }
+    }
+    outfile << "]" << endl;
+    //MedianQuicksort(0, median_arr.size()-1);           //Quicksort call with Median Partition
+    outfile << "Sorted Median array: " << endl;
+    outfile << "[";
+    for(int j = 0; j < median_arr.size(); j++){
+       if(j == median_arr.size()-1){
+            outfile << median_arr[j];                    //Prints sorted array
+        }
+        else{
+            outfile << median_arr[j] << ",";
+        }
+    }
+    outfile << "]" << endl;
     
 
     return 0;
