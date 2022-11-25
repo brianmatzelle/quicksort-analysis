@@ -11,4 +11,4 @@ Sorted Hoare array:
 Original Median array:
 [15,4,1,5,3,9,10,2]
 Sorted Median array: 
-[15,4,1,5,3,9,10,2]
+[1,2,3,4,5,9,10,15]

@@ -18,6 +18,8 @@ using namespace std::chrono;
 vector <int> lomuto_arr;
 vector <int> hoare_arr;
 vector <int> median_arr;
+
+
 int LomutoPartition(int p, int r){
     int x = lomuto_arr[r];
     int i = p-1;
@@ -59,6 +61,24 @@ int HoarePartition(int p, int r){
         swap(hoare_arr[i], hoare_arr[j]);
     }
 }
+int MedianPartition(int p , int r){
+    int pInit = p;
+    int rInit = r;
+    int x = median_arr[p + ((r-p)/2)];
+    while(pInit <= rInit){
+        while(median_arr[pInit] < x) pInit++;
+        while(median_arr[rInit]> x) rInit--;
+        if(pInit <= rInit){
+            swap(median_arr[pInit], median_arr[rInit]);
+            pInit++;
+            rInit--;
+        }
+        if(p < rInit)MedianPartition(p,rInit);
+        if(pInit < r)MedianPartition(pInit,r);
+    }
+
+    return r;
+}
 void HoareQuicksort(int p, int r){
     if(p < r){
         int q = HoarePartition(p,r);
@@ -73,15 +93,15 @@ void LomutoQuicksort(int p, int r){
         LomutoQuicksort(q+1,r);
     }
 }
-/*
-vector <int> MedianQuicksort(vector <int> A, int p, int r){
+
+void MedianQuicksort(int p, int r){
     if(p < r){
-        //int q = MedianPartition();
-        //MedianQuicksort(A,p,q-1);
-        //MedianQuicksort(A,q+1,r);
+        int q = MedianPartition(p,r);
+        MedianQuicksort(p,q-1);
+        MedianQuicksort(q+1,r);
     }
 }
-*/
+
 
 int main(int argc, char *argv[]) {
     string inputfile_name = ""; //input file
@@ -178,7 +198,8 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
-    //MedianQuicksort(0, median_arr.size()-1);           //Quicksort call with Median Partition
+    int n = sizeof(median_arr)/sizeof(median_arr[0]);
+    MedianQuicksort(0, median_arr.size()-1);           //Quicksort call with Median Partition
     outfile << "Sorted Median array: " << endl;
     outfile << "[";
     for(int j = 0; j < median_arr.size(); j++){
