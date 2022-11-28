@@ -135,7 +135,6 @@ int main(int argc, char *argv[]) {
         hoare_arr.push_back(stoi(command));     //created 3 seperate arrays for each Partition scenario
         median_arr.push_back(stoi(command));
     }
-
     //////////////////////////////////////////////////LAMUTO
     outfile << "Original Lomuto array:" <<endl;
     outfile << "[";
@@ -148,7 +147,10 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
+    auto lomuto_start = std::chrono::high_resolution_clock::now();
     LomutoQuicksort(0, lomuto_arr.size()-1);        //Quicksort call with Lomuto's Partition
+    auto lomuto_finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> lomuto_total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
     outfile << "Sorted Lomuto array: " << endl;
     outfile << "[";
     for(int j = 0; j < lomuto_arr.size(); j++){
@@ -160,6 +162,7 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
+    outfile << "Lomuto Quicksort Execution Time: " << lomuto_total_time.count() << endl;
     outfile << endl;
     //////////////////////////////////////////////////////////////Now Hoares
     outfile << "Original Hoare array:" <<endl;
@@ -173,7 +176,10 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
+    auto hoare_start = std::chrono::high_resolution_clock::now();
     HoareQuicksort(0, hoare_arr.size()-1);           //Quicksort call with Hoare's Partition
+    auto hoare_finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> hoare_total_time = std::chrono::duration<double>(hoare_finish - hoare_start);
     outfile << "Sorted Hoare array: " << endl;
     outfile << "[";
     for(int j = 0; j < hoare_arr.size(); j++){
@@ -185,6 +191,7 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
+    outfile << "Hoare's Quicksort Execution Time: " <<  hoare_total_time.count() << endl;
     outfile << endl;
     /////////////////////////////////////////////TODO:Median Partition
     outfile << "Original Median array:" <<endl;
@@ -199,7 +206,10 @@ int main(int argc, char *argv[]) {
     }
     outfile << "]" << endl;
     int n = sizeof(median_arr)/sizeof(median_arr[0]);
+    auto median_start = std::chrono::high_resolution_clock::now();
     MedianQuicksort(0, median_arr.size()-1);           //Quicksort call with Median Partition
+    auto median_finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> median_total_time = std::chrono::duration<double>(median_finish - median_start);
     outfile << "Sorted Median array: " << endl;
     outfile << "[";
     for(int j = 0; j < median_arr.size(); j++){
@@ -211,6 +221,8 @@ int main(int argc, char *argv[]) {
         }
     }
     outfile << "]" << endl;
+    outfile << "Median Quicksort Execution Time: " << median_total_time.count() << endl;
+
     
 
     return 0;

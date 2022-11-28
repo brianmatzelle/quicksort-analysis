@@ -12,7 +12,7 @@ Updates:
 Quicksort Implemented ✓
 Lomuto's Partition Implemented ✓
 Hoare's Partition Implemented ✓
+Median Partition Implemented ✓
+Time chronos set up ✓
 
-Median Partition Implemented X
-Time chronos set up X
 Graphics/Presentation made X
