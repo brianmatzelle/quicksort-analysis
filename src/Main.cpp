@@ -15,19 +15,9 @@
 using namespace std;
 using namespace std::chrono;
 
-//vector <int> lomuto_arr;
-//vector <int> hoare_arr;
-//vector <int> median_arr;
 vector<vector<int> > lomuto_master;
 vector<vector<int> > hoare_master;     //master array of every input array
 vector<vector<int> > median_master;
-
-
-//vector <vector <int>> lomuto_result;
-//vector <vector <int>> hoare_result;     //master array of every resulting array
-//vector <vector <int>> median_result;
-
-
 
 int LomutoPartition(vector<int> &lomuto_arr, int p, int r){
     int x = lomuto_arr[r];
@@ -71,26 +61,25 @@ int HoarePartition(vector<int> &hoare_arr,int p, int r){
         swap(hoare_arr[i], hoare_arr[j]);
     }
 }
-/*
-int MedianPartition(int p , int r){
-    int pInit = p;
-    int rInit = r;
-    int x = median_arr[p + ((r-p)/2)];
-    while(pInit <= rInit){
-        while(median_arr[pInit] < x) pInit++;
-        while(median_arr[rInit]> x) rInit--;
-        if(pInit <= rInit){
-            swap(median_arr[pInit], median_arr[rInit]);
-            pInit++;
-            rInit--;
-        }
-        if(p < rInit)MedianPartition(p,rInit);
-        if(pInit < r)MedianPartition(pInit,r);
+int MedianPartition(vector<int> &median_arr,int p, int r){
+    int pivot;
+    int x = (p + r)/2;
+    if(median_arr[x] < median_arr[p]){
+        swap(median_arr[x], median_arr[p]);
     }
+    if(median_arr[r] < median_arr[x]){
+        swap(median_arr[r], median_arr[p]);
+    }
+    if(median_arr[r] < median_arr[x]){
+        swap(median_arr[r], median_arr[x]);
+    }
+    swap(median_arr[x], median_arr[r-1]);
 
-    return r;
+    pivot = median_arr[r-1];
+
+    return pivot;
+
 }
-*/
 void HoareQuicksort(vector<int> &hoare_arr,int p, int r){
     if(p < r){
         int q = HoarePartition(hoare_arr,p,r);
@@ -111,15 +100,25 @@ void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
         LomutoQuicksort(lomuto_arr,q+1,r);
     }
 }
-/*
-void MedianQuicksort(int p, int r){
-    if(p < r){
-        int q = MedianPartition(p,r);
-        MedianQuicksort(p,q-1);
-        MedianQuicksort(q+1,r);
+int MedianQuicksort(vector<int> &median_arr,int p , int r){
+    int pInit = p;
+    int rInit = r;
+    int x = MedianPartition(median_arr,p, r);
+    while(pInit <= rInit){
+        while(median_arr[pInit] < x) pInit++;
+        while(median_arr[rInit]> x) rInit--;
+        if(pInit <= rInit){
+            swap(median_arr[pInit], median_arr[rInit]);
+            pInit++;
+            rInit--;
+        }
+        if(p < rInit)MedianQuicksort(median_arr,p,rInit);
+        if(pInit < r)MedianQuicksort(median_arr,pInit,r);
     }
+
+    return r;
 }
-*/
+
 
 
 int main(int argc, char *argv[]) {
@@ -192,58 +191,37 @@ int main(int argc, char *argv[]) {
         outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
     }
     outfile<<endl;
-
-
-    /*
-    auto hoare_start = std::chrono::high_resolution_clock::now();
-    HoareQuicksort(0, hoare_arr.size()-1);           //Quicksort call with Hoare's Partition
-    auto hoare_finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> hoare_total_time = std::chrono::duration<double>(hoare_finish - hoare_start);
-    outfile << "Sorted Hoare array: " << endl;
-    outfile << "[";
-    for(int j = 0; j < hoare_arr.size(); j++){
-       if(j == hoare_arr.size()-1){
-            outfile << hoare_arr[j];                    //Prints sorted array
+    /////////////////////////////////////////////Median Partition
+    outfile << "median:" <<endl;
+    for(int i = 0; i < median_master.size(); i++){
+        outfile << median_master[i].size() << " ";
+        auto median_start = std::chrono::high_resolution_clock::now();
+        cout << "Original Median array:" <<endl;
+        cout << "[";
+        for(int j = 0; j < median_master[i].size(); j++){
+            if(j != median_master[i].size()-1){
+                cout << median_master[i][j] << ",";         //Prints original *untouched* array
+            }
+            else{
+                cout << median_master[i][j];
+            }
         }
-        else{
-            outfile << hoare_arr[j] << ",";
+        cout << "]" << endl;
+        MedianQuicksort(median_master[i] ,0,median_master[i].size()-1);
+        cout << "Sorted Median array:" <<endl;
+        cout << "[";
+        for(int j = 0; j < median_master[i].size(); j++){
+            if(j != median_master[i].size()-1){
+                cout << median_master[i][j] << ",";         //Prints original *untouched* array
+            }
+            else{
+                cout << median_master[i][j];
+            }
         }
+        cout << "]" << endl;
+        auto median_finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> total_time = std::chrono::duration<double>(median_finish - median_start);
+        outfile <<fixed<<setprecision(10) <<total_time.count()<<endl;                                     
     }
-    outfile << "]" << endl;
-    outfile << "Hoare's Quicksort Execution Time: " <<  hoare_total_time.count() << endl;
-    outfile << endl;
-    /////////////////////////////////////////////TODO:Median Partition
-    outfile << "Original Median array:" <<endl;
-    outfile << "[";
-    for(int i = 0; i < median_arr.size(); i++){
-        if(i != median_arr.size()-1){
-            outfile << median_arr[i] << ",";         //Prints original *untouched* array
-        }
-        else{
-            outfile << median_arr[i];
-        }
-    }
-    outfile << "]" << endl;
-    int n = sizeof(median_arr)/sizeof(median_arr[0]);
-    auto median_start = std::chrono::high_resolution_clock::now();
-    MedianQuicksort(0, median_arr.size()-1);           //Quicksort call with Median Partition
-    auto median_finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> median_total_time = std::chrono::duration<double>(median_finish - median_start);
-    outfile << "Sorted Median array: " << endl;
-    outfile << "[";
-    for(int j = 0; j < median_arr.size(); j++){
-       if(j == median_arr.size()-1){
-            outfile << median_arr[j];                    //Prints sorted array
-        }
-        else{
-            outfile << median_arr[j] << ",";
-        }
-    }
-    outfile << "]" << endl;
-    outfile << "Median Quicksort Execution Time: " << median_total_time.count() << endl;
-    */
-
-    
-
     return 0;
 }
