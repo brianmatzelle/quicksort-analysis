@@ -36,7 +36,7 @@ def populate_median_set(stream):
 
 
 def main():
-    stream = open("../output_structure.txt", "r")
+    stream = open("../output.txt", "r")
 
     for line in stream:
         match line:
@@ -49,18 +49,15 @@ def main():
             case other:
                 print(f"Error: {line} instruction not recognized...\n")
 
-    plt.plot(lomuto_n, lomuto_times, color='green', linestyle='solid', linewidth = 3, 
-    marker='o', markerfacecolor='green', markersize=12, label='lomuto')
-    plt.plot(hoare_n, hoare_times, color='red', linestyle='solid', linewidth = 3, 
-    marker='o', markerfacecolor='red', markersize=12, label='hoare')
-    plt.plot(median_n, median_times, color='blue', linestyle='solid', linewidth = 3, 
-    marker='o', markerfacecolor='blue', markersize=12, label='median')
+    plt.plot(lomuto_n, lomuto_times, color='green', linestyle='solid', linewidth = 3, label='lomuto')
+    plt.plot(hoare_n, hoare_times, color='red', linestyle='solid', linewidth = 3, label='hoare')
+    plt.plot(median_n, median_times, color='blue', linestyle='solid', linewidth = 3, label='median')
     plt.legend()
     
-    plt.xlim(0, 250)
+    plt.xlim(0, 1000)
     plt.xlabel("set size")
 
-    plt.ylim(0, .05)
+    plt.ylim(0, .006)
     plt.ylabel("sorting time")
 
     plt.title("Comparing Speeds of Partitions as Sets Increase")
