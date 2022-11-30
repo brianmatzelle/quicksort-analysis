@@ -18,9 +18,9 @@ using namespace std::chrono;
 //vector <int> lomuto_arr;
 //vector <int> hoare_arr;
 //vector <int> median_arr;
-vector <vector <int>> lomuto_master;
-vector <vector <int>> hoare_master;     //master array of every input array
-vector <vector <int>> median_master;
+vector<vector<int> > lomuto_master;
+vector<vector<int> > hoare_master;     //master array of every input array
+vector<vector<int> > median_master;
 
 
 //vector <vector <int>> lomuto_result;
@@ -125,7 +125,6 @@ void MedianQuicksort(int p, int r){
 int main(int argc, char *argv[]) {
     string inputfile_name = ""; //input file
     string outputfile_name = "";   //output file
-
     inputfile_name = argv[1];
     outputfile_name = argv[2];
 
@@ -145,14 +144,15 @@ int main(int argc, char *argv[]) {
         printf("Invalid Command: Stopped on output file.\n");
         exit(0);
     }
+    
     ifstream infile(inputfile_name);
     ofstream outfile(outputfile_name);
 
     string n; //will hold n, the length of a given array
-    vector <vector <int>> lomuto_master;
+    vector<vector<int> > lomuto_master;
 
     //STEP ONE: fill the master arrays
-    vector <int> temp_array;
+    vector<int> temp_array;
     while(infile>>n){
         int s = stoi(n);
         //cout << "n:" << s << endl;
