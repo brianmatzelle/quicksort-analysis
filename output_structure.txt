@@ -1,14 +1,11 @@
 lomuto:
-n: _
-time: 0.00790836
-... (repeat for all lomuto n and time values || NO SPACE BETWEEN INSTANCES)
+100 0.00790836
+200 0.01490836
 
 hoare:
-n: _
-time: 0.00186397
-... (repeat for all hoare n and time values || NO SPACE BETWEEN INSTANCES)
+100 0.00186397
+200 0.00366397
 
 median:
-n: _
-time: 0.024149
-... (repeat for all median n and time values || NO SPACE BETWEEN INSTANCES)
+100 0.024149
+200 0.048149

@@ -2,7 +2,7 @@ fn generate_one_set(size: u16) -> String {
     let mut ret = String::new();
     ret.push_str(&size.to_string());
     ret.push_str(" ");
-    for i in (0..size) {
+    for i in 0..size {
         ret.push_str(&i.to_string());
         ret.push_str(" ");
     }
