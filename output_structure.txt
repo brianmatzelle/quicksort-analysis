@@ -1,0 +1,14 @@
+lomuto:
+n: _
+time: 0.00790836
+... (repeat for all lomuto n and time values || NO SPACE BETWEEN INSTANCES)
+
+hoare:
+n: _
+time: 0.00186397
+... (repeat for all hoare n and time values || NO SPACE BETWEEN INSTANCES)
+
+median:
+n: _
+time: 0.024149
+... (repeat for all median n and time values || NO SPACE BETWEEN INSTANCES)
