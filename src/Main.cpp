@@ -63,21 +63,33 @@ int HoarePartition(vector<int> &hoare_arr,int p, int r){
 }
 int MedianPartition(vector<int> &median_arr,int p, int r){
     int pivot;
-    int x = (p + r)/2;
-    if(median_arr[x] < median_arr[p]){
-        swap(median_arr[x], median_arr[p]);
-    }
-    if(median_arr[r] < median_arr[x]){
-        swap(median_arr[r], median_arr[p]);
-    }
-    if(median_arr[r] < median_arr[x]){
-        swap(median_arr[r], median_arr[x]);
-    }
-    swap(median_arr[x], median_arr[r-1]);
+    int pInit = p;
+    int rInit = r;
+    int x = p+((r-p)/2);
 
-    pivot = median_arr[r-1];
+    if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
+    else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
+    pivot = median_arr[x];
 
+    // cout << pivot << endl;
     return pivot;
+
+    // int pivot;
+    // int x = (p + r)/2;
+    // if(median_arr[x] < median_arr[p]){
+    //     swap(median_arr[x], median_arr[p]);
+    // }
+    // if(median_arr[r] < median_arr[x]){
+    //     swap(median_arr[r], median_arr[p]);
+    // }
+    // if(median_arr[r] < median_arr[x]){
+    //     swap(median_arr[r], median_arr[x]);
+    // }
+    // swap(median_arr[x], median_arr[r-1]);
+
+    // pivot = median_arr[r-1];
+
+    // return pivot;
 
 }
 void HoareQuicksort(vector<int> &hoare_arr,int p, int r){
