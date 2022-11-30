@@ -46,8 +46,8 @@ int LomutoPartition(vector<int> &lomuto_arr, int p, int r){
     lomuto_arr[r] = temp;
     return i+1;
 }
-/*
-int HoarePartition(int p, int r){
+
+int HoarePartition(vector<int> &hoare_arr,int p, int r){
     int x = hoare_arr[p];
     int i = p -1;
     int j = r +1;
@@ -71,6 +71,7 @@ int HoarePartition(int p, int r){
         swap(hoare_arr[i], hoare_arr[j]);
     }
 }
+/*
 int MedianPartition(int p , int r){
     int pInit = p;
     int rInit = r;
@@ -89,14 +90,14 @@ int MedianPartition(int p , int r){
 
     return r;
 }
-void HoareQuicksort(int p, int r){
+*/
+void HoareQuicksort(vector<int> &hoare_arr,int p, int r){
     if(p < r){
-        int q = HoarePartition(p,r);
-        HoareQuicksort(p,q);
-        HoareQuicksort(q+1,r);
+        int q = HoarePartition(hoare_arr,p,r);
+        HoareQuicksort(hoare_arr,p,q);
+        HoareQuicksort(hoare_arr,q+1,r);
     }
 }
-*/
 void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
     if(p < r){
         //cout << "makes it to partition..." << endl;
@@ -170,33 +171,30 @@ int main(int argc, char *argv[]) {
 //////////////////////BY THIS POINT, WE NOW HAVE THREE MASTER ARRAYS THAT WE CAN LOOP THROUGH
 
 /////////////////////LOMUTO FIRST
-    outfile << "Lomuto:" <<endl;
+    outfile << "lomuto:" <<endl;
     for(int i = 0; i < lomuto_master.size(); i++){
         outfile << lomuto_master[i].size() << " ";
-
-
         auto lomuto_start = std::chrono::high_resolution_clock::now();
-        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1); // i will be specific array we are working with
-                                                        //0, start index
-                                                        //size()-1, last index
+        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1);                                              
         auto lomuto_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
         outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
     }
-    
-    /*
-    //////////////////////////////////////////////////////////////Now Hoares
-    outfile << "Original Hoare array:" <<endl;
-    outfile << "[";
-    for(int i = 0; i < hoare_arr.size(); i++){
-        if(i != hoare_arr.size()-1){
-            outfile << hoare_arr[i] << ",";         //Prints original *untouched* array
-        }
-        else{
-            outfile << hoare_arr[i];
-        }
+    outfile << endl;
+////////////////////////////////////Now Hoares
+    outfile << "hoare:" <<endl;
+    for(int i = 0; i < hoare_master.size(); i++){
+        outfile << hoare_master[i].size() << " ";
+        auto hoare_start = std::chrono::high_resolution_clock::now();
+        HoareQuicksort(hoare_master[i] ,0,hoare_master[i].size()-1);
+        auto hoare_finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> total_time = std::chrono::duration<double>(hoare_finish - hoare_start);
+        outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
     }
-    outfile << "]" << endl;
+    outfile<<endl;
+
+
+    /*
     auto hoare_start = std::chrono::high_resolution_clock::now();
     HoareQuicksort(0, hoare_arr.size()-1);           //Quicksort call with Hoare's Partition
     auto hoare_finish = std::chrono::high_resolution_clock::now();
