@@ -49,16 +49,16 @@ def main():
             case other:
                 print(f"Error: {line} instruction not recognized...\n")
 
-    plt.plot(lomuto_n, lomuto_times, color='green', linestyle='solid', linewidth = 3, label='lomuto')
-    plt.plot(hoare_n, hoare_times, color='red', linestyle='solid', linewidth = 3, label='hoare')
-    plt.plot(median_n, median_times, color='blue', linestyle='solid', linewidth = 3, label='median')
+    plt.plot(lomuto_n, lomuto_times, color='green', linestyle='solid', linewidth = 1, label='lomuto')
+    plt.plot(hoare_n, hoare_times, color='red', linestyle='solid', linewidth = 1, label='hoare')
+    plt.plot(median_n, median_times, color='blue', linestyle='solid', linewidth = 1, label='median')
     plt.legend()
     
     plt.xlim(0, 1000)
-    plt.xlabel("set size")
+    plt.xlabel("SET SIZE")
 
     plt.ylim(0, .006)
-    plt.ylabel("sorting time")
+    plt.ylabel("SORTING TIME")
 
     plt.title("Comparing Speeds of Partitions as Sets Increase")
     plt.show()
