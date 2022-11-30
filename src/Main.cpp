@@ -15,12 +15,21 @@
 using namespace std;
 using namespace std::chrono;
 
-vector <int> lomuto_arr;
-vector <int> hoare_arr;
-vector <int> median_arr;
+//vector <int> lomuto_arr;
+//vector <int> hoare_arr;
+//vector <int> median_arr;
+vector <vector <int>> lomuto_master;
+vector <vector <int>> hoare_master;     //master array of every input array
+vector <vector <int>> median_master;
 
 
-int LomutoPartition(int p, int r){
+//vector <vector <int>> lomuto_result;
+//vector <vector <int>> hoare_result;     //master array of every resulting array
+//vector <vector <int>> median_result;
+
+
+
+int LomutoPartition(vector<int> &lomuto_arr, int p, int r){
     int x = lomuto_arr[r];
     int i = p-1;
     int temp;
@@ -37,6 +46,7 @@ int LomutoPartition(int p, int r){
     lomuto_arr[r] = temp;
     return i+1;
 }
+/*
 int HoarePartition(int p, int r){
     int x = hoare_arr[p];
     int i = p -1;
@@ -86,14 +96,21 @@ void HoareQuicksort(int p, int r){
         HoareQuicksort(q+1,r);
     }
 }
-void LomutoQuicksort(int p, int r){
+*/
+void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
     if(p < r){
-        int q = LomutoPartition(p,r);
-        LomutoQuicksort(p,q-1);
-        LomutoQuicksort(q+1,r);
+        //cout << "makes it to partition..." << endl;
+        //cout << "p:"<<p <<endl;
+        //cout << "r:"<<r <<endl;
+        //cout << lomuto_arr.size() << endl;
+       // cout <<"first element: " <<lomuto_arr[0]<<endl;
+        int q = LomutoPartition(lomuto_arr,p,r);
+        //cout << "post partition..." << endl;
+        LomutoQuicksort(lomuto_arr,p,q-1);
+        LomutoQuicksort(lomuto_arr,q+1,r);
     }
 }
-
+/*
 void MedianQuicksort(int p, int r){
     if(p < r){
         int q = MedianPartition(p,r);
@@ -101,6 +118,7 @@ void MedianQuicksort(int p, int r){
         MedianQuicksort(q+1,r);
     }
 }
+*/
 
 
 int main(int argc, char *argv[]) {
@@ -129,41 +147,44 @@ int main(int argc, char *argv[]) {
     ifstream infile(inputfile_name);
     ofstream outfile(outputfile_name);
 
-    string command;
-    while (infile >> command){
-        lomuto_arr.push_back(stoi(command));
-        hoare_arr.push_back(stoi(command));     //created 3 seperate arrays for each Partition scenario
-        median_arr.push_back(stoi(command));
+    string n; //will hold n, the length of a given array
+    vector <vector <int>> lomuto_master;
+
+    //STEP ONE: fill the master arrays
+    vector <int> temp_array;
+    while(infile>>n){
+        int s = stoi(n);
+        //cout << "n:" << s << endl;
+        for(int i = 0; i < s; i++){
+            int element;
+            infile>> element;
+            //cout <<"element: " <<element<< endl;
+            temp_array.push_back(element);
+        }
+        lomuto_master.push_back(temp_array);
+        hoare_master.push_back(temp_array);
+        median_master.push_back(temp_array);
+        temp_array.clear();
     }
-    //////////////////////////////////////////////////LAMUTO
-    outfile << "Original Lomuto array:" <<endl;
-    outfile << "[";
-    for(int i = 0; i < lomuto_arr.size(); i++){     //Prints original *untouched* array
-        if(i != lomuto_arr.size()-1){
-            outfile << lomuto_arr[i] << ",";
-        }
-        else{
-            outfile << lomuto_arr[i];
-        }
+
+//////////////////////BY THIS POINT, WE NOW HAVE THREE MASTER ARRAYS THAT WE CAN LOOP THROUGH
+
+/////////////////////LOMUTO FIRST
+    outfile << "Lomuto:" <<endl;
+    for(int i = 0; i < lomuto_master.size(); i++){
+        outfile << lomuto_master[i].size() << " ";
+
+
+        auto lomuto_start = std::chrono::high_resolution_clock::now();
+        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1); // i will be specific array we are working with
+                                                        //0, start index
+                                                        //size()-1, last index
+        auto lomuto_finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
+        outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
     }
-    outfile << "]" << endl;
-    auto lomuto_start = std::chrono::high_resolution_clock::now();
-    LomutoQuicksort(0, lomuto_arr.size()-1);        //Quicksort call with Lomuto's Partition
-    auto lomuto_finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> lomuto_total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
-    outfile << "Sorted Lomuto array: " << endl;
-    outfile << "[";
-    for(int j = 0; j < lomuto_arr.size(); j++){
-       if(j == lomuto_arr.size()-1){
-            outfile << lomuto_arr[j];               //Prints sorted array
-        }
-        else{
-            outfile << lomuto_arr[j] << ",";
-        }
-    }
-    outfile << "]" << endl;
-    outfile << "Lomuto Quicksort Execution Time: " << lomuto_total_time.count() << endl;
-    outfile << endl;
+    
+    /*
     //////////////////////////////////////////////////////////////Now Hoares
     outfile << "Original Hoare array:" <<endl;
     outfile << "[";
@@ -222,6 +243,7 @@ int main(int argc, char *argv[]) {
     }
     outfile << "]" << endl;
     outfile << "Median Quicksort Execution Time: " << median_total_time.count() << endl;
+    */
 
     
 

@@ -14,5 +14,4 @@ Lomuto's Partition Implemented ✓
 Hoare's Partition Implemented ✓
 Median Partition Implemented ✓
 Time chronos set up ✓
-
 Graphics/Presentation made X
