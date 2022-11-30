@@ -196,29 +196,7 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < median_master.size(); i++){
         outfile << median_master[i].size() << " ";
         auto median_start = std::chrono::high_resolution_clock::now();
-        cout << "Original Median array:" <<endl;
-        cout << "[";
-        for(int j = 0; j < median_master[i].size(); j++){
-            if(j != median_master[i].size()-1){
-                cout << median_master[i][j] << ",";         //Prints original *untouched* array
-            }
-            else{
-                cout << median_master[i][j];
-            }
-        }
-        cout << "]" << endl;
         MedianQuicksort(median_master[i] ,0,median_master[i].size()-1);
-        cout << "Sorted Median array:" <<endl;
-        cout << "[";
-        for(int j = 0; j < median_master[i].size(); j++){
-            if(j != median_master[i].size()-1){
-                cout << median_master[i][j] << ",";         //Prints original *untouched* array
-            }
-            else{
-                cout << median_master[i][j];
-            }
-        }
-        cout << "]" << endl;
         auto median_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(median_finish - median_start);
         outfile <<fixed<<setprecision(10) <<total_time.count()<<endl;                                     
