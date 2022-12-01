@@ -36,7 +36,23 @@ int LomutoPartition(vector<int> &lomuto_arr, int p, int r){
     lomuto_arr[r] = temp;
     return i+1;
 }
+int MedianOfThree(vector<int> &median_arr,int p, int r){
+    int pivot;
+    int pInit = p;
+    int rInit = r;
+    int x = p+((r-p)/2);
+    if ((pInit > rInit) ^ (pInit > x)) 
+        x=pInit;
+    else if ((rInit < pInit) ^ (rInit < x)) 
+        x=rInit;
+    // if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
+    // else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
+    pivot = x;
 
+    return pivot;
+
+
+}
 int HoarePartition(vector<int> &hoare_arr,int p, int r){
     int x = hoare_arr[p];
     int i = p -1;
@@ -61,35 +77,30 @@ int HoarePartition(vector<int> &hoare_arr,int p, int r){
         swap(hoare_arr[i], hoare_arr[j]);
     }
 }
+
 int MedianPartition(vector<int> &median_arr,int p, int r){
-    int pivot;
-    int pInit = p;
-    int rInit = r;
-    int x = p+((r-p)/2);
-
-    if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
-    else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
-    pivot = median_arr[x];
-
-    // cout << pivot << endl;
-    return pivot;
-
-    // int pivot;
-    // int x = (p + r)/2;
-    // if(median_arr[x] < median_arr[p]){
-    //     swap(median_arr[x], median_arr[p]);
-    // }
-    // if(median_arr[r] < median_arr[x]){
-    //     swap(median_arr[r], median_arr[p]);
-    // }
-    // if(median_arr[r] < median_arr[x]){
-    //     swap(median_arr[r], median_arr[x]);
-    // }
-    // swap(median_arr[x], median_arr[r-1]);
-
-    // pivot = median_arr[r-1];
-
-    // return pivot;
+    int x = median_arr[MedianOfThree(median_arr, p,r)];
+    int i = p -1;
+    int j = r +1;
+    while (true) {
+        // Find leftmost element greater than
+        // or equal to pivot
+        do {
+            i++;
+        } while (median_arr[i] < x);
+ 
+        // Find rightmost element smaller than
+        // or equal to pivot
+        do {
+            j--;
+        } while (median_arr[j] > x);
+ 
+        // If two pointers met.
+        if (i >= j)
+            return j;
+ 
+        swap(median_arr[i], median_arr[j]);
+    }
 
 }
 void HoareQuicksort(vector<int> &hoare_arr,int p, int r){
@@ -97,6 +108,13 @@ void HoareQuicksort(vector<int> &hoare_arr,int p, int r){
         int q = HoarePartition(hoare_arr,p,r);
         HoareQuicksort(hoare_arr,p,q);
         HoareQuicksort(hoare_arr,q+1,r);
+    }
+}
+void MedianQuicksort(vector<int> &median_arr,int p, int r){
+    if(p < r){
+        int q = MedianPartition(median_arr,p,r);
+        MedianQuicksort(median_arr,p,q);
+        MedianQuicksort(median_arr,q+1,r);
     }
 }
 void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
@@ -112,24 +130,26 @@ void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
         LomutoQuicksort(lomuto_arr,q+1,r);
     }
 }
-int MedianQuicksort(vector<int> &median_arr,int p , int r){
-    int pInit = p;
-    int rInit = r;
-    int x = MedianPartition(median_arr,p, r);
-    while(pInit <= rInit){
-        while(median_arr[pInit] < x) pInit++;
-        while(median_arr[rInit]> x) rInit--;
-        if(pInit <= rInit){
-            swap(median_arr[pInit], median_arr[rInit]);
-            pInit++;
-            rInit--;
-        }
-        if(p < rInit)MedianQuicksort(median_arr,p,rInit);
-        if(pInit < r)MedianQuicksort(median_arr,pInit,r);
-    }
 
-    return r;
-}
+// int MedianQuicksort(vector<int> &median_arr,int p , int r){
+//     int pInit = p;
+//     int rInit = r;
+//     int x = MedianPartition(median_arr,p, r);
+//     while(pInit <= rInit){
+//         while(median_arr[pInit] < x) pInit++;
+//         while(median_arr[rInit]> x) rInit--;
+//         if(pInit <= rInit){
+//             swap(median_arr[pInit], median_arr[rInit]);
+//             pInit++;
+//             rInit--;
+//         }
+
+//     if(p < rInit)MedianQuicksort(median_arr,p,rInit);
+//     if(pInit < r)MedianQuicksort(median_arr,pInit,r);
+//     }
+
+//     return r;
+// }
 
 
 
@@ -208,10 +228,19 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < median_master.size(); i++){
         outfile << median_master[i].size() << " ";
         auto median_start = std::chrono::high_resolution_clock::now();
+        // for(int j = 0; j < median_master[i].size();j++){
+        // cout << median_master[i][j] << ",";
+        // }
+        // cout << "]" << endl;   
         MedianQuicksort(median_master[i] ,0,median_master[i].size()-1);
         auto median_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(median_finish - median_start);
-        outfile <<fixed<<setprecision(10) <<total_time.count()<<endl;                                     
+        outfile <<fixed<<setprecision(10) <<total_time.count()<<endl; 
+        // for(int j = 0; j < median_master[i].size();j++){
+        // cout << median_master[i][j] << ",";
+        // }
+        // cout << "]" << endl;                                    
     }
+
     return 0;
 }
