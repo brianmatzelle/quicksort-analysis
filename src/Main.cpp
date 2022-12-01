@@ -41,12 +41,12 @@ int MedianOfThree(vector<int> &median_arr,int p, int r){
     int pInit = p;
     int rInit = r;
     int x = p+((r-p)/2);
-    if ((pInit > rInit) ^ (pInit > x)) 
-        x=pInit;
-    else if ((rInit < pInit) ^ (rInit < x)) 
-        x=rInit;
-    // if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
-    // else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
+    // if ((pInit > rInit) ^ (pInit > x)) 
+    //     x=pInit;
+    // else if ((rInit < pInit) ^ (rInit < x)) 
+    //     x=rInit;
+    if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
+    else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
     pivot = x;
 
     return pivot;
@@ -131,25 +131,6 @@ void LomutoQuicksort(vector<int> &lomuto_arr, int p, int r){
     }
 }
 
-// int MedianQuicksort(vector<int> &median_arr,int p , int r){
-//     int pInit = p;
-//     int rInit = r;
-//     int x = MedianPartition(median_arr,p, r);
-//     while(pInit <= rInit){
-//         while(median_arr[pInit] < x) pInit++;
-//         while(median_arr[rInit]> x) rInit--;
-//         if(pInit <= rInit){
-//             swap(median_arr[pInit], median_arr[rInit]);
-//             pInit++;
-//             rInit--;
-//         }
-
-//     if(p < rInit)MedianQuicksort(median_arr,p,rInit);
-//     if(pInit < r)MedianQuicksort(median_arr,pInit,r);
-//     }
-
-//     return r;
-// }
 
 
 
