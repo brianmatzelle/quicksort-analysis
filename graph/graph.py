@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import sys
 
 lomuto_n = []
 lomuto_times = []
@@ -36,7 +37,7 @@ def populate_median_set(stream):
 
 
 def main():
-    stream = open("output.txt", "r")
+    stream = open(sys.argv[1], "r")
 
     for line in stream:
         match line:
