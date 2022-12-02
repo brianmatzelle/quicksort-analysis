@@ -58,7 +58,7 @@ def main():
     plt.xlim(0, 1000)
     plt.xlabel("SET SIZE")
 
-    plt.ylim(0, .0001)
+    plt.ylim(0, .0019)
     plt.ylabel("SORTING TIME")
 
     plt.title("Comparing Speeds of Partitions as Sets Increase")
