@@ -185,16 +185,8 @@ int main(int argc, char *argv[]) {
     outfile << "lomuto:" <<endl;
     for(int i = 0; i < lomuto_master.size(); i++){
         outfile << lomuto_master[i].size() << " ";
-        for(int j = 0; j < lomuto_master[i].size();j++){
-        cout << lomuto_master[i][j] << ",";
-        }
-        cout << "]" << endl;  
         auto lomuto_start = std::chrono::high_resolution_clock::now();
-        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1);   
-        for(int j = 0; j < lomuto_master[i].size();j++){
-        cout << lomuto_master[i][j] << ",";
-        }
-        cout << "]" << endl;                                             
+        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1);                                              
         auto lomuto_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
         outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
@@ -215,19 +207,11 @@ int main(int argc, char *argv[]) {
     outfile << "median:" <<endl;
     for(int i = 0; i < median_master.size(); i++){
         outfile << median_master[i].size() << " ";
-        auto median_start = std::chrono::high_resolution_clock::now();
-        for(int j = 0; j < median_master[i].size();j++){
-        cout << median_master[i][j] << ",";
-        }
-        cout << "]" << endl;   
+        auto median_start = std::chrono::high_resolution_clock::now();   
         MedianQuicksort(median_master[i] ,0,median_master[i].size()-1);
         auto median_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(median_finish - median_start);
-        outfile <<fixed<<setprecision(10) <<total_time.count()<<endl; 
-        for(int j = 0; j < median_master[i].size();j++){
-        cout << median_master[i][j] << ",";
-        }
-        cout << "]" << endl;                                    
+        outfile <<fixed<<setprecision(10) <<total_time.count()<<endl;                                    
     }
 
     return 0;
