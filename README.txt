@@ -7,6 +7,7 @@ Professor Weiying Dai
 How to run code:
 
 In Linux command line, run "make" followed by "bin/main samples/<input_file> <output_file>"
+To run the graph with the given output file, write "graph/graph.py <output.txt>"
 
 to use python virtual environment, run the following command in your terminal
 
@@ -20,4 +21,4 @@ Lomuto's Partition Implemented ✓
 Hoare's Partition Implemented ✓
 Median Partition Implemented ✓
 Time chronos set up ✓
-Graphics/Presentation made X
+Graphics/Presentation made ✓
