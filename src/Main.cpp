@@ -26,31 +26,30 @@ int LomutoPartition(vector<int> &lomuto_arr, int p, int r){
     for(int j = p; j < r; j++){
         if(lomuto_arr[j] <= x){
             i++;
-            temp = lomuto_arr[i];
-            lomuto_arr[i]=lomuto_arr[j];        //Lomuto Partition Algorithm, straight out of the lecture slides
-            lomuto_arr[j]=temp;
+            // temp = lomuto_arr[i];
+            // lomuto_arr[i]=lomuto_arr[j];        //Lomuto Partition Algorithm, straight out of the lecture slides
+            // lomuto_arr[j]=temp;
+            swap(lomuto_arr[i], lomuto_arr[j]);
         }
     }
-    temp = lomuto_arr[i+1];
-    lomuto_arr[i+1] = lomuto_arr[r];
-    lomuto_arr[r] = temp;
+    // temp = lomuto_arr[i+1];
+    // lomuto_arr[i+1] = lomuto_arr[r];
+    // lomuto_arr[r] = temp;
+    swap(lomuto_arr[i+1], lomuto_arr[r]);
+
     return i+1;
 }
+
 int MedianOfThree(vector<int> &median_arr,int p, int r){
     int pivot;
     int pInit = p;
     int rInit = r;
     int x = p+((r-p)/2);
-    // if ((pInit > rInit) ^ (pInit > x)) 
-    //     x=pInit;
-    // else if ((rInit < pInit) ^ (rInit < x)) 
-    //     x=rInit;
     if (pInit>x && pInit<rInit || pInit>rInit && pInit<x ) x=pInit;
     else if (rInit>pInit && rInit<x || rInit>x && rInit<pInit ) x=rInit;
     pivot = x;
 
     return pivot;
-
 
 }
 int HoarePartition(vector<int> &hoare_arr,int p, int r){
@@ -186,8 +185,16 @@ int main(int argc, char *argv[]) {
     outfile << "lomuto:" <<endl;
     for(int i = 0; i < lomuto_master.size(); i++){
         outfile << lomuto_master[i].size() << " ";
+        for(int j = 0; j < lomuto_master[i].size();j++){
+        cout << lomuto_master[i][j] << ",";
+        }
+        cout << "]" << endl;  
         auto lomuto_start = std::chrono::high_resolution_clock::now();
-        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1);                                              
+        LomutoQuicksort(lomuto_master[i] ,0,lomuto_master[i].size()-1);   
+        for(int j = 0; j < lomuto_master[i].size();j++){
+        cout << lomuto_master[i][j] << ",";
+        }
+        cout << "]" << endl;                                             
         auto lomuto_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(lomuto_finish - lomuto_start);
         outfile <<fixed<<setprecision(10) <<total_time.count() << endl;                                     
@@ -209,18 +216,18 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < median_master.size(); i++){
         outfile << median_master[i].size() << " ";
         auto median_start = std::chrono::high_resolution_clock::now();
-        // for(int j = 0; j < median_master[i].size();j++){
-        // cout << median_master[i][j] << ",";
-        // }
-        // cout << "]" << endl;   
+        for(int j = 0; j < median_master[i].size();j++){
+        cout << median_master[i][j] << ",";
+        }
+        cout << "]" << endl;   
         MedianQuicksort(median_master[i] ,0,median_master[i].size()-1);
         auto median_finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total_time = std::chrono::duration<double>(median_finish - median_start);
         outfile <<fixed<<setprecision(10) <<total_time.count()<<endl; 
-        // for(int j = 0; j < median_master[i].size();j++){
-        // cout << median_master[i][j] << ",";
-        // }
-        // cout << "]" << endl;                                    
+        for(int j = 0; j < median_master[i].size();j++){
+        cout << median_master[i][j] << ",";
+        }
+        cout << "]" << endl;                                    
     }
 
     return 0;
